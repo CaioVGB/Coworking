@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 public class Sobre extends JDialog {
 	public Sobre() {
+		setTitle("Sobre");
 		setResizable(false);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
