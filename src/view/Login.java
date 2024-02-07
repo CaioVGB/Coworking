@@ -134,9 +134,18 @@ public class Login extends JDialog {
 			// correspondem
 
 			if (resultadoExecucao.next()) {
-				System.out.println("Você logou!");
+				Home home = new Home();
+				home.setVisible(true);
+				
 			}
+		
+			else {
+				System.out.println("Login e/ou senha inválidos");
+			}
+		
+		
 		}
+		
 
 		catch (Exception e) {
 			System.out.println(e);
