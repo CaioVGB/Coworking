@@ -4,11 +4,18 @@ import java.awt.EventQueue;
 
 import javax.swing.JDialog;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import model.DAO;
+
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import java.awt.Cursor;
+import javax.swing.JComboBox;
 
 public class Funcionarios extends JDialog{
 	private JTextField inputNome;
@@ -16,10 +23,10 @@ public class Funcionarios extends JDialog{
 	private JTextField inputLogin;
 	private JPasswordField passwordField;
 	private JPasswordField inputSenha;
-	private JTextField inputPerfil;
 	public Funcionarios() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Funcionarios.class.getResource("/img/logo.png")));
 		setTitle("Funcionarios");
+		setBounds(0,0,500,400);
 		getContentPane().setLayout(null);
 		
 		JLabel nomeFunc = new JLabel("Nome");
@@ -79,13 +86,40 @@ public class Funcionarios extends JDialog{
 		imgDelete.setBounds(353, 195, 64, 55);
 		getContentPane().add(imgDelete);
 		
-		inputPerfil = new JTextField();
-		inputPerfil.setBounds(50, 147, 158, 20);
+		inputPerfil = new JComboBox();
+		inputPerfil.setBounds(50, 146, 158, 22);
 		getContentPane().add(inputPerfil);
-		inputPerfil.setColumns(10);
 		
 	}
 
+	//Criar um objeto da classe DAO para estabelecer conexão com o banco
+	DAO dao = new DAO();
+	private JComboBox inputPerfil;
+	
+	public void adicionarFuncionarios() {
+		String create = "insert into funcionario (nomeFunc, login, senha, perfil, email) values (?, ?, md5(?), ?. ?);";
+		
+		try {
+			//Estabelecer a conexão
+			Connection conexaoBanco = dao.conectar();
+			
+			//Preparar a execução do script SQL
+			PreparedStatement executarSQL = conexaoBanco.prepareStatement(create);
+			executarSQL.setString(1, nomeFunc.getText());
+			executarSQL.setString(2, loginFunc.getText());
+			executarSQL.setString(3, senhaFunc.getText());
+			//Trocar o componente do perfil
+			executarSQL.setString(5, emailFunc.getText());
+		
+		}
+		
+		catch (Exception e) {
+			
+		
+		   }
+		
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

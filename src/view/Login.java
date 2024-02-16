@@ -176,8 +176,13 @@ public class Login extends JDialog {
 				// correspodem
 
 				if (resultadoExecucao.next()) {
-					Home home = new Home();		
+					Home home = new Home();
+					
+					
 					home.txtUsuarioLogado.setText("Usuario: " + resultadoExecucao.getString(2));
+					home.txtPerfilLogado.setText("Perfil: " + resultadoExecucao.getString(5));
+					
+					
 					home.setVisible(true);
 					
 					dispose();
