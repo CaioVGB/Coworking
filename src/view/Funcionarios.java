@@ -112,6 +112,7 @@ public class Funcionarios extends JDialog {
 		JButton btnUpdate = new JButton("");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				atualizarFuncionarios();
 			}
 		});
 		btnUpdate.setBackground(new Color(240, 240, 240));
@@ -121,13 +122,21 @@ public class Funcionarios extends JDialog {
 		btnUpdate.setBounds(280, 290, 89, 60);
 		getContentPane().add(btnUpdate);
 
-		JButton btnDelete = new JButton("");
+		JButton btnDelete;
+		btnDelete = new JButton("");
 		btnDelete.setBackground(new Color(240, 240, 240));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDelete.setIcon(new ImageIcon(Funcionarios.class.getResource("/img/delete.png")));
 		btnDelete.setBounds(374, 290, 89, 60);
 		getContentPane().add(btnDelete);
+		
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deletarFuncionario();
+				
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(50, 27, 314, 97);
@@ -172,10 +181,37 @@ public class Funcionarios extends JDialog {
 	private JComboBox inputPerfil;
 	private JTable tblFuncionario;
 	private JTextField inputID;
+	public JButton btnDelete;
+
 
 	public void adicionarFuncionarios() {
 		String create = "insert into funcionario (nomeFunc, login, senha, perfil, email) values (?, ?, md5(?), ?, ?);";
-
+		
+		if(inputLogin.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Login do usuario obrigatorio!");
+			inputLogin.requestFocus();
+		}
+		
+		else if(inputSenha.getPassword().length == 0) {
+			JOptionPane.showMessageDialog(null, "Senha ou usuario obrigatoria!");
+			inputSenha.requestFocus();
+		}
+		
+		else if(inputNome.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Nome do usuario obrigatorio!");
+			inputNome.requestFocus();
+			
+		}
+		
+		else if(inputEmail.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Email do usuario obrigatorio!");
+			inputEmail.requestFocus();
+			
+		}
+		
+		else {
+		
+		
 		try {
 			// Estabelecer a conexao
 			Connection conexaoBanco = dao.conectar();
@@ -209,7 +245,7 @@ public class Funcionarios extends JDialog {
 			System.out.println(e);
 
 		}
-
+		}
 	}
 
 	private void buscarFuncionarioNaTabela() {
@@ -305,6 +341,31 @@ public class Funcionarios extends JDialog {
 	public void atualizarFuncionarios() {
 		
 		String updateBtn = "update funcionario set nomeFunc = ?, login = ?, senha = md5(?), perfil = ?, email = ? where idFuncionario = ?;";
+		
+		if(inputLogin.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Login do usuario obrigatorio!");
+			inputLogin.requestFocus();
+		}
+		
+		else if(inputSenha.getPassword().length == 0) {
+			JOptionPane.showMessageDialog(null, "Senha ou usuario obrigatoria!");
+			inputSenha.requestFocus();
+		}
+		
+		else if(inputNome.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Nome do usuario obrigatorio!");
+			inputNome.requestFocus();
+			
+		}
+		
+		else if(inputEmail.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Email do usuario obrigatorio!");
+			inputEmail.requestFocus();
+			
+		}
+		
+		else {
+		
 		 
 				try {
 		 
@@ -337,10 +398,35 @@ public class Funcionarios extends JDialog {
 					System.out.println(e);
 		 
 				}
+		}
 		 
 			}
 
-
+	private void deletarFuncionario() {
+		String delete = "delete from funcionario where idFuncionario = ?;";
+ 
+		try {
+			Connection conexaoBanco = dao.conectar();
+ 
+			PreparedStatement executarSQL = conexaoBanco.prepareStatement(delete);
+ 
+			executarSQL.setString(1, inputID.getText());
+ 
+			executarSQL.executeUpdate();
+ 
+			JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso.");
+ 
+			limparCampos();
+ 
+			conexaoBanco.close();
+		}
+ 
+		catch (Exception e) {
+			System.out.print(e);
+ 
+		}
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
